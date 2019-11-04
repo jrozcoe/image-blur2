@@ -1,0 +1,43 @@
+class Image
+
+  def initialize(array)
+    @image = array
+  end
+
+  def output
+    @image.each do |row|
+      puts row.join
+    end
+  end
+
+  def blur!(distance=1)
+      blur_coords
+  end
+
+  def blur_coords
+    blur_coords = []
+      @image.each_with_index do |row, index|
+      row.each_with_index do |x, row_index|
+        blur_coords << [index, row_index] if x == 1
+      end
+    end
+
+      blur_coords.each do |coords|
+        @image[coords[0]][coords[1] + 1] = 1 if coords[1] + 1 <= @image[coords[0]].length- 1
+        @image[coords[0] + 1][coords[1]] = 1 if coords[0] + 1 <= @image.length- 1
+        @image[coords[0]][coords[1] - 1] = 1 if coords[1] - 1 >= 0
+        @image[coords[0]-1][coords[1]] = 1 if coords[0] - 1 >= 0
+      end
+    end
+end
+
+image = Image.new([
+    [0,0,0,0],
+    [0,1,0,0],
+    [0,0,0,0],
+    [0,0,1,0]
+])
+puts
+  image.blur!
+  image.output
+
